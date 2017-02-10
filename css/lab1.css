@@ -1,0 +1,77 @@
+html , body {
+    background-image: url("../img/subtle.png");
+}
+
+.title {
+    font-size: 120px;
+    font-family: Helvetica;
+    font-weight: Bold;
+    color: #2c3e50;
+    width: 120px;
+    height: 120px;
+    text-align: center;
+    vertical-align: middle;
+    position: fixed;
+    top: 50%;
+    margin-top: -200px;
+    opacity: 1;
+    z-index: -100;
+}
+
+.title2 {
+    font-size: 30px;
+    font-family: Helvetica;
+    font-weight: Bold;
+    color: #2c3e50;
+    width: 300px;
+    height: 120px;
+    text-align: center;
+    vertical-align: middle;
+    position: fixed;
+    top: 50%;
+    margin-top: -200px;
+    opacity: 1;
+    z-index: -100;
+}
+
+.subtitle {
+    font-size: 20px;
+    font-family: Helvetica;
+    font-weight: Bold;
+    color: #2c3e50;
+    height: 120px;
+    vertical-align: middle;
+    position: fixed;
+    top: 50%;
+    margin-top: -50px;
+    opacity: 1;
+    line-height: 3.0;
+    z-index: -100;
+}
+
+.btn {
+  background: #3498db;
+  background-image: -webkit-linear-gradient(top, #3498db, #2980b9);
+  background-image: -moz-linear-gradient(top, #3498db, #2980b9);
+  background-image: -ms-linear-gradient(top, #3498db, #2980b9);
+  background-image: -o-linear-gradient(top, #3498db, #2980b9);
+  background-image: linear-gradient(to bottom, #3498db, #2980b9);
+  -webkit-border-radius: 28;
+  -moz-border-radius: 28;
+  border-radius: 28px;
+  font-family: Arial;
+  color: #ffffff;
+  font-size: 20px;
+  padding: 10px 20px 10px 20px;
+  text-decoration: none;
+}
+
+.btn:hover {
+  background: #3cb0fd;
+  background-image: -webkit-linear-gradient(top, #3cb0fd, #3498db);
+  background-image: -moz-linear-gradient(top, #3cb0fd, #3498db);
+  background-image: -ms-linear-gradient(top, #3cb0fd, #3498db);
+  background-image: -o-linear-gradient(top, #3cb0fd, #3498db);
+  background-image: linear-gradient(to bottom, #3cb0fd, #3498db);
+  text-decoration: none;
+}
