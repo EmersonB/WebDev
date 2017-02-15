@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Lab 1</title>
+
+    <script type="text/javascript" src="../javascript/jquery-3.1.1.min.js"></script>
+    <script type="text/javascript" src="../javascript/require.js"></script>
+
+    <script type="text/javascript" src="../json/states_hash.json"></script>
+
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+    <link rel="stylesheet" href="../css/animate.css">
+  </head>
+<body onload = "startGame()">
+  <div> Please list all boarders </div>
+  <div id="question">Welcome</div>
+  <div id="inputfields"></div>
+</body>
+
+<script type = "text/javascript">
+
+function startGame() {
+  var stateboarders = JSON.parse(states);
+  var allstates = Object.keys(stateboarders);
+
+  //console.log(allstates);
+
+  var state = allstates[Math.floor(Math.random()*allstates.length)];
+
+  var questionLabel = document.getElementById('question');
+  var inputFields = document.getElementById('inputfields');
+
+  questionLabel.innerHTML = state;
+
+  //console.log(stateboarders["Alabama"]["name"]);
+  console.log(stateboarders[state]["borders"]);
+  for(var i = 0; i < stateboarders[state]["borders"].length; i++){
+    inputFields.innerHTML += "<input/><br/>";
+  }
+  inputFields.innerHTML += "<button>Submit</button>";
+
+
+}
+
+
+</script>
+</html>
