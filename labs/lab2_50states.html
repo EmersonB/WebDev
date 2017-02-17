@@ -14,35 +14,71 @@
     <link rel="stylesheet" href="../css/animate.css">
   </head>
 <body onload = "startGame()">
-  <div> Please list all boarders </div>
-  <div id="question">Welcome</div>
-  <div id="inputfields"></div>
+  <div class="row center">
+    <div class="col-md-3"></div>
+    <div class="text-center jumbotron col-md-6">
+      <h2 id="question">Welcome</h2><br/>
+      <div id="stateLabels"></div></br>
+      <input class="form-control" id="inputField" placeholder="Input State Border"></input><br/><br/>
+      <button type="button" class="btn btn-primary" onClick='submitPressed()'>Submit</button>
+    </div>
+  </div>
 </body>
 
 <script type = "text/javascript">
-
+var size = 0;
+var correct = 0;
+var borders = [];
 function startGame() {
-  var stateboarders = JSON.parse(states);
-  var allstates = Object.keys(stateboarders);
+  var stateborders = states;
+  var allstates = Object.keys(stateborders);
 
   //console.log(allstates);
-
+  size = 0;
+  while(size==0){
   var state = allstates[Math.floor(Math.random()*allstates.length)];
+  size = stateborders[state]["borders"].length;
+  borders = stateborders[state]["borders"].slice("0");
+  }
+
+  for(var i = 0; i < stateborders[state]["borders"].length; i++){
+    borders[i] = borders[i].replace(/ /g,'');
+  }
 
   var questionLabel = document.getElementById('question');
-  var inputFields = document.getElementById('inputfields');
+  var stateLabels = document.getElementById('stateLabels');
+  stateLabels.innerHTML = "";
 
-  questionLabel.innerHTML = state;
+  questionLabel.innerHTML = "Please List all Borders of : " + state;
 
-  //console.log(stateboarders["Alabama"]["name"]);
-  console.log(stateboarders[state]["borders"]);
-  for(var i = 0; i < stateboarders[state]["borders"].length; i++){
-    inputFields.innerHTML += "<input/><br/>";
+  //console.log(stateborders["Alabama"]["name"]);
+  //console.log(stateborders[state]["borders"]);
+
+  for(var i = 0; i < stateborders[state]["borders"].length; i++){
+    console.log(stateborders[state]["borders"][i]);
+    //stateLabels.innerHTML += "<div id=border_"+stateborders[state]["borders"][i].replace(/ /g,'')+">"+stateborders[state]["borders"][i]+"</div>";
+    stateLabels.innerHTML += "<h3 id=border_"+stateborders[state]["borders"][i].replace(/ /g,'')+">???</h3>";
   }
-  inputFields.innerHTML += "<button>Submit</button>";
-
 
 }
+
+  function submitPressed(){
+    //console.log(size);
+    var inputField = document.getElementById('inputField');
+    //console.log(inputField.value.replace(/ /g,''));
+    //console.log(borders.includes(inputField.value.replace(/ /g,'')));
+    if(borders.includes(inputField.value.replace(/ /g,''))){
+      //console.log("correct");
+      var temp = document.getElementById('border_'+inputField.value.replace(/ /g,''));
+      temp.innerHTML = inputField.value;
+      correct++;
+      if(correct == size){
+        console.log("Winner");
+        correct = 0;
+        startGame();
+      }
+    }
+  }
 
 
 </script>
