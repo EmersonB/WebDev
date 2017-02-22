@@ -20,6 +20,7 @@
       <h2 id="question">Welcome</h2><br/>
       <div id="stateLabels"></div></br>
       <input class="form-control" id="inputField" onkeypress="enterPressed(event)" placeholder="Input State Border"></input><br/><br/>
+      <div id="hint">Type -h for hint</div>
       <button type="button" class="btn btn-primary" onClick='submitPressed()'>Submit</button>
     </div>
   </div>
@@ -71,7 +72,17 @@ function startGame() {
 
   function submitPressed(){
     //console.log(size);
+
     var inputField = document.getElementById('inputField');
+
+    if(inputField.value == ("-h")){
+      var hintField = document.getElementById('hint');
+      hintBorders = [];
+      for(border in borders){
+        hintBorders.push(borders[border].substring(0,1));
+      }
+      hintField.innerHTML = "First letters of each state are: " + hintBorders;
+    }
     //console.log(inputField.value.replace(/ /g,''));
     //console.log(borders.includes(inputField.value.replace(/ /g,'')));
     if(borders.includes(inputField.value.replace(/ /g,''))){
@@ -82,6 +93,8 @@ function startGame() {
       if(correct == size){
         console.log("Winner");
         correct = 0;
+        var hintField = document.getElementById('hint');
+        hintField.innerHTML = "Type -h for hint";
         startGame();
       }
     }
