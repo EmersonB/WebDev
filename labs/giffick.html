@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Oh My Giffick</title>
+
+    <script type="text/javascript" src="../javascript/jquery-3.1.1.min.js"></script>
+    <script type="text/javascript" src="../javascript/require.js"></script>
+
+    <script type="text/javascript" src="../json/states_hash.json"></script>
+
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+    <link rel="stylesheet" href="../css/animate.css">
+    <link rel="stylesheet" href="../css/lab2.css">
+
+  </head>
+<body>
+  <div class="row center">
+    <div class="col-md-3"></div>
+    <div class="text-center col-md-6">
+      <div onclick="giffickPressed()" class = "btn giffickButton" src = "../img/giffickButton.png"></div>
+      <div id="alerts"></div>
+    </div>
+  </div>
+</body>
+<script>
+function giffickPressed(){
+  //alert("GIIFFICKK");
+  var giffickAlerts = document.getElementById('alerts');
+  giffickAlerts.innerHTML += "<div class='alert alert-success fade in'><a href='#' class='close' data-dismiss='alert'>&times;</a><strong>Success!</strong> You have successfully pressed the Giffick button.</div>";
+}
+</script>
+<html>

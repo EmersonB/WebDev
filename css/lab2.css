@@ -1,3 +1,10 @@
 .stateimg {
   width: 50%;
 }
+
+.giffickButton {
+  background-image: url("../img/giffickButton.png");
+  width: 539px;
+  height: 164px;
+  margin-top: 25%;
+}
