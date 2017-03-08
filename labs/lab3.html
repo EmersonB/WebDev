@@ -3,146 +3,45 @@
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>50 States</title>
+    <title>Itunes API</title>
 
     <script type="text/javascript" src="../javascript/jquery-3.1.1.min.js"></script>
     <script type="text/javascript" src="../javascript/require.js"></script>
 
-    <script type="text/javascript" src="../json/states_hash.json"></script>
 
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
     <link rel="stylesheet" href="../css/animate.css">
-    <link rel="stylesheet" href="../css/lab2.css">
 
   </head>
-<body onload = "startGame()">
+<body>
   <div class="row center">
     <div class="col-md-3"></div>
-    <div class="text-center jumbotron col-md-6">
-      <h2 id="question">Welcome</h2><br/>
-      <div id="stateLabels"></div></br>
-      <input class="form-control" id="inputField" onkeypress="enterPressed(event)" placeholder="Input State Border"></input><br/><br/>
-      <div id="hint">Type -h for hint</div>
-      <button type="button" class="btn btn-primary" onClick='submitPressed()'>Submit</button><br/><br/>
-      <img class="stateimg" id="stateImage"/>
+      <div class="col-md-6 jumbotron">
+        <input class="form-control" id="artistInput" onkeypress="enterPressed(event)" placeholder="Input an artist"></input>
+        <div id="resultsLabel"></div>
+      </div>
     </div>
   </div>
 </body>
 
 <script type = "text/javascript">
-var size = 0;
-var correct = 0;
-var borders = [];
-var currentState = "VA";
-var stateborders = states;
-var allstates = Object.keys(stateborders);
-
-function enterPressed(e) {
-    if (e.keyCode == 13) {
-        submitPressed();
-    }
-}
-
-function startGame() {
-
-  //console.log(allstates);
-  size = 0;
-  while(size==0){
-  var index = Math.floor(Math.random()*allstates.length);
-  var state = allstates[index];
-  allstates.splice(index,1);
-  console.log(allstates.length);
-  currentState = reverse_abbr[state];
-  size = stateborders[state]["borders"].length;
-  borders = stateborders[state]["borders"].slice("0");
-  }
-
-  for(var i = 0; i < stateborders[state]["borders"].length; i++){
-    borders[i] = borders[i].replace(/ /g,'');
-  }
-
-  // var questionLabel = document.getElementById('question');
-  // var stateLabels = document.getElementById('stateLabels');
-  // stateLabels.innerHTML = "";
-  //
-  // questionLabel.innerHTML = "Please List all Borders of : " + state;
-
-  $("#stateLabels").html("");
-  $("#question").html("Please List all Borders of : " + state);
-
-  //console.log(stateborders["Alabama"]["name"]);
-  //console.log(stateborders[state]["borders"]);
-
-  for(var i = 0; i < stateborders[state]["borders"].length; i++){
-    console.log(stateborders[state]["borders"][i]);
-    //stateLabels.innerHTML += "<div id=border_"+stateborders[state]["borders"][i].replace(/ /g,'')+">"+stateborders[state]["borders"][i]+"</div>";
-    //stateLabels.innerHTML += "<h3 id=border_"+stateborders[state]["borders"][i].replace(/ /g,'')+">???</h3>";
-    $("#stateLabels").append("<h3 id=border_"+stateborders[state]["borders"][i].replace(/ /g,'')+">???</h3>");
-  }
-
-}
-
-  function submitPressed(){
-    //console.log(size);
-
-    if($('#inputField').val() == ("-h")){
-      //var hintField = document.getElementById('hint');
-      hintBorders = [];
-      for(border in borders){
-        hintBorders.push(borders[border].substring(0,1));
+  function enterPressed(e) {
+      if (e.keyCode == 13) {
+          updateSearch();
       }
-      //hintField.innerHTML = "First letters of each state are: " + hintBorders;
-      $("#hint").html("First letters of each state are: " + hintBorders);
-    }
-    if($('#inputField').val() == ("-bayush")){
-      //var hintField = document.getElementById('hint');
-      //hintField.innerHTML = borders;
-      $("#hint").html(borders);
-    }
-    if($('#inputField').val() == ("-image")){
-      //var stateImage = document.getElementById('stateImage');
-      imageUrl = "http://www.50states.com/images/redesign/maps/"+currentState.toLowerCase()+"-largemap.png";
-      //stateImage.src = imageUrl;
-      $("#stateImage").attr("src",imageUrl);
-      //http://www.50states.com/images/redesign/maps/va-largemap.png
-    }
-    //console.log(inputField.value.replace(/ /g,''));
-    //console.log(borders.includes(inputField.value.replace(/ /g,'')));
-    if(borders.includes($('#inputField').val().replace(/ /g,''))){
-      //console.log("correct");
-      //var temp = document.getElementById('border_'+$('#inputField').val().replace(/ /g,''));
-      //temp.innerHTML = $('#inputField').val();
-      $('#border_'+$('#inputField').val().replace(/ /g,'')).html($('#inputField').val());
-      correct++;
-      if(correct == size){
-        console.log("Winner");
-        correct = 0;
-        //var hintField = document.getElementById('hint');
-        //hintField.innerHTML = "Type -h for hint";
-        $('#hint').html("Type -h for hint");
-        $("#stateImage").attr("src",null);
-        startGame();
-      }
-    }
-    else if(Object.keys(abbr).includes($('#inputField').val()) && borders.includes(abbr[$('#inputField').val()].replace(/ /g,''))){
-      //var temp = document.getElementById('border_'+abbr[inputField.value].replace(/ /g,''));
-      //temp.innerHTML = abbr[inputField.value];
-      $('#border_'+abbr[inputField.value].replace(/ /g,'')).html(abbr[inputField.value]);
-      correct++;
-      if(correct == size){
-        console.log("Winner");
-        correct = 0;
-        //var hintField = document.getElementById('hint');
-        //hintField.innerHTML = "Type -h for hint";
-        $('#hint').html("Type -h for hint");
-        $("#stateImage").attr("src",null);
-        startGame();
-      }
-    }
-    //inputField.value = "";
-    $('#inputField').val("");
   }
 
+  function updateSearch() {
+    $('#resultsLabel').html("");
+    console.log('https://itunes.apple.com/search?term='+$('#artistInput').val()+'&limit=25&callback=?');
+    $.getJSON('https://itunes.apple.com/search?term='+$('#artistInput').val()+'&limit=25&callback=?',function(result){
+        console.log(result);
+        for(var i = 0; i < result["resultCount"]; i++){
+          console.log(result["results"][i]["artistName"]+": "+result["results"][i]["trackName"])
+          $('#resultsLabel').append("<div><img src="+result["results"][i]["artworkUrl60"]+"/> "+"<a href="+result["results"][i]["trackViewUrl"]+">"+result["results"][i]["artistName"]+": "+result["results"][i]["trackName"]+"</a> <a>$"+result["results"][i]["trackPrice"]+"</a><br/></div>");
+        }
+        });
+  }
 
 </script>
 </html>
