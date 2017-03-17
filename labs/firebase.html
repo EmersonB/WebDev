@@ -57,18 +57,24 @@
     messagingSenderId: "929264952557"
   };
   firebase.initializeApp(config);
+  var database = firebase.database();
+
+  var searchtermRef = firebase.database().ref('searchterm');
+  searchtermRef.on('value', function(snapshot) {
+    updateSearch(snapshot.val());
+  });
 
 
   function enterPressed(e) {
       if (e.keyCode == 13) {
-          updateSearch();
+        firebase.database().ref('searchterm').set($('#artistInput').val());
       }
   }
 
-  function updateSearch() {
+  function updateSearch(searchValue) {
     $('#resultsLabel').html("");
-    console.log('https://itunes.apple.com/search?term='+$('#artistInput').val()+'&limit=25&callback=?');
-    $.getJSON('https://itunes.apple.com/search?term='+$('#artistInput').val()+'&limit=25&callback=?',function(result){
+    //console.log('https://itunes.apple.com/search?term='+$('#artistInput').val()+'&limit=25&callback=?');
+    $.getJSON('https://itunes.apple.com/search?term='+searchValue+'&limit=25&callback=?',function(result){
         console.log(result);
         for(var i = 0; i < result["resultCount"]; i++){
           console.log(result["results"][i]["artistName"]+": "+result["results"][i]["trackName"])
