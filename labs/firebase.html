@@ -68,6 +68,7 @@
   function enterPressed(e) {
       if (e.keyCode == 13) {
         firebase.database().ref('searchterm').set($('#artistInput').val());
+        updateSearch($('#artistInput').val());
       }
   }
 
