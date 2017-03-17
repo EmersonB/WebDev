@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Firebase App</title>
+
+    <script type="text/javascript" src="../javascript/jquery-3.1.1.min.js"></script>
+    <script type="text/javascript" src="../javascript/require.js"></script>
+
+    <script src="https://www.gstatic.com/firebasejs/3.7.1/firebase.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/3.7.1/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/3.7.1/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/3.7.1/firebase-database.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/3.7.1/firebase-messaging.js"></script>
+
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+    <link rel="stylesheet" href="../css/animate.css">
+
+  </head>
+<body>
+  <div class="row center">
+    <div class="col-md-3"></div>
+      <div class="text-center col-md-6">
+      <div class="input-group">
+        <span class="input-group-addon" id="sizing-addon2">@</span>
+        <input id="email" type="text" class="form-control" placeholder="Email" aria-describedby="sizing-addon2">
+      </div>
+      <div class="input-group">
+        <span class="input-group-addon" id="sizing-addon2">&nbsp;*&nbsp;</span>
+        <input id="password" class="form-control" type="password" placeholder="Password" aria-describedby="sizing-addon2">
+      </div>
+      <div class="btn-group" role="group" aria-label="...">
+        <button type="button" class="btn btn-default" onclick="login()">Login</button>
+        <button type="button" class="btn btn-default" onclick="register()">Register</button>
+        <button type="button" class="btn btn-default" onclick="logout()">Logout</button>
+      </div>
+
+      </div>
+  </div>
+  <div id="itunes" class="row center">
+    <div class="col-md-3"></div>
+      <div class="col-md-6 jumbotron">
+        <input class="form-control" id="artistInput" onkeypress="enterPressed(event)" placeholder="Input an artist"></input>
+        <div id="resultsLabel"></div>
+      </div>
+    </div>
+</body>
+
+<script type = "text/javascript">
+  // Initialize Firebase
+  var config = {
+    apiKey: "AIzaSyD3t7swsu_7bmzUIBNYi02Zj2b2_Gj0Irw",
+    authDomain: "tjweb-55683.firebaseapp.com",
+    databaseURL: "https://tjweb-55683.firebaseio.com",
+    storageBucket: "tjweb-55683.appspot.com",
+    messagingSenderId: "929264952557"
+  };
+  firebase.initializeApp(config);
+
+
+  function enterPressed(e) {
+      if (e.keyCode == 13) {
+          updateSearch();
+      }
+  }
+
+  function updateSearch() {
+    $('#resultsLabel').html("");
+    console.log('https://itunes.apple.com/search?term='+$('#artistInput').val()+'&limit=25&callback=?');
+    $.getJSON('https://itunes.apple.com/search?term='+$('#artistInput').val()+'&limit=25&callback=?',function(result){
+        console.log(result);
+        for(var i = 0; i < result["resultCount"]; i++){
+          console.log(result["results"][i]["artistName"]+": "+result["results"][i]["trackName"])
+          $('#resultsLabel').append("<div><img src="+result["results"][i]["artworkUrl60"]+"/> "+"<a href="+result["results"][i]["trackViewUrl"]+">"+result["results"][i]["artistName"]+": "+result["results"][i]["trackName"]+"</a> <a>$"+result["results"][i]["trackPrice"]+"</a><br/></div>");
+        }
+        });
+  }
+
+
+  function login(){
+    var email = $('#email').val();
+    var password = $('#password').val();
+    firebase.auth().signInWithEmailAndPassword(email, password).catch(function(error) {
+      // Handle Errors here.
+      var errorCode = error.code;
+      console.log(error.Message);
+
+    });
+  }
+
+  function register(){
+    var email = $('#email').val();
+    var password = $('#password').val();
+    firebase.auth().createUserWithEmailAndPassword(email, password).catch(function(error) {
+  // Handle Errors here.
+      var errorCode = error.code;
+      var errorMessage = error.message;
+      // ...
+    });
+  }
+
+  function logout(){
+    firebase.auth().signOut().then(function() {
+  // Sign-out successful.
+    }, function(error) {
+      // An error happened.
+    });
+  }
+
+  firebase.auth().onAuthStateChanged(user => {
+    if(user) {
+      //window.location = 'home.html'; //After successful login, user will be redirected to home.html
+      console.log("successful");
+      $('#itunes').show();
+    }
+    else{
+      $('#itunes').hide();
+    }
+  });
+
+</script>
+</html>
