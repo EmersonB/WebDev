@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Envision Logo</title>
+
+    <script type="text/javascript" src="../javascript/jquery-3.1.1.min.js"></script>
+    <script type="text/javascript" src="../javascript/require.js"></script>
+    <script src="../javascript/typed.js"></script>
+    <link rel="stylesheet" href="test.css">
+
+
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+    <link rel="stylesheet" href="../css/animate.css">
+
+  </head>
+<body>
+  <div class="row center">
+    <div class="col-md-3"></div>
+      <div class="col-md-6 text-center">
+        <img class = "image" src = "../img/logotest.png"/>
+        <h2 class=""><a class="yellow">ENVISION</a> <a class="red example"></a></h2>
+      </div>
+    </div>
+  </div>
+</body>
+
+<script type = "text/javascript">
+$( function(){
+    $(".example").typed({
+        strings: ["OPPORTUNITY", "CHANGE", "CHANGE"],
+        typeSpeed: 0,
+        backDelay: 1500,
+        loop: !0, // here
+        startDelay: 1500
+    });
+});
+</script>
+</html>
