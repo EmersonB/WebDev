@@ -42,6 +42,8 @@
     <div class="col-md-3"></div>
       <div class="col-md-6 jumbotron">
         <input class="form-control" id="artistInput" onkeypress="enterPressed(event)" placeholder="Input an artist"></input>
+        <input type="checkbox" id="explicitInput">&nbsp;Explicit</input></br>
+        <input type="checkbox" id="songInput">&nbsp;Songs only</input>
         <div id="resultsLabel"></div>
       </div>
     </div>
@@ -59,27 +61,51 @@
   firebase.initializeApp(config);
   var database = firebase.database();
 
+  var searchterm = "";
+  var explicit = false;
+  var song = false;
   var searchtermRef = firebase.database().ref('searchterm');
+  var explicitRef = firebase.database().ref('explicit');
+  var songRef = firebase.database().ref('song');
   searchtermRef.on('value', function(snapshot) {
-    updateSearch(snapshot.val());
+    searchterm = snapshot.val();
+    updateSearch(searchterm, explicit, song);
+  });
+  explicitRef.on('value', function(snapshot) {
+    explicit = snapshot.val();
+    updateSearch(searchterm, explicit, song);
+  });
+  songRef.on('value', function(snapshot) {
+    song = snapshot.val();
+    updateSearch(searchterm, explicit, song);
   });
 
 
   function enterPressed(e) {
       if (e.keyCode == 13) {
         firebase.database().ref('searchterm').set($('#artistInput').val());
-        updateSearch($('#artistInput').val());
+        firebase.database().ref('explicit').set($('#explicitInput').is(':checked'));
+        firebase.database().ref('song').set($('#songInput').is(':checked'));
+        updateSearch($('#artistInput').val(),$('#explicitInput').is(':checked'),$('#songInput').is(':checked'));
       }
   }
 
-  function updateSearch(searchValue) {
+  function updateSearch(searchValue, explicit, song) {
     $('#resultsLabel').html("");
     //console.log('https://itunes.apple.com/search?term='+$('#artistInput').val()+'&limit=25&callback=?');
     $.getJSON('https://itunes.apple.com/search?term='+searchValue+'&limit=25&callback=?',function(result){
         console.log(result);
         for(var i = 0; i < result["resultCount"]; i++){
-          console.log(result["results"][i]["artistName"]+": "+result["results"][i]["trackName"])
+          if(explicit == false && result["results"][i]["contentAdvisoryRating"] == "Explicit"){
+
+          }
+          else if(song == true && result["results"][i]["kind"]!="song"){
+
+          }
+          else{
+          //console.log(result["results"][i]["contentAdvisoryRating"]+": "+result["results"][i]["kind"])
           $('#resultsLabel').append("<div><img src="+result["results"][i]["artworkUrl60"]+"/> "+"<a href="+result["results"][i]["trackViewUrl"]+">"+result["results"][i]["artistName"]+": "+result["results"][i]["trackName"]+"</a> <a>$"+result["results"][i]["trackPrice"]+"</a><br/></div>");
+          }
         }
         });
   }
