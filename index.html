@@ -1,23 +1,18 @@
-<!doctype html>
 <html>
-    <head>
-        <link rel="stylesheet" href="css/style.css">
-    </head>
-    <body onload="doSomething1();">
-        <p>
-            This is a html file
-        </p>
-        <script type="text/javascript">
-            var x = 10;
-            function doSomething1() {
-                console.log( "hi");
-            }
-        </script>
-        <script type="text/javascript">
-            function doSomething2() {
-                console.log(x+"");
-            }
-        </script>
-        
-    </body>
+  <body>
+    <form ref='uploadForm'
+      id='uploadForm'
+      action='http://localhost:8080/upload'
+      method='post'
+      encType="multipart/form-data">
+        <input type="file" name="sampleFile" />
+        <input type='submit' value='Upload!' />
+    </form>
+    <form ref='uploadForm'
+      id='uploadForm'
+      action='http://localhost:8080/download'
+      method='get'>
+      <input type='submit' value='Download File' />
+    </form>
+  </body>
 </html>

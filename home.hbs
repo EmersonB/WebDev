@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html>  
+  <body>
+    {{title}}
+    <form ref='uploadForm'
+      id='uploadForm'
+      action='http://localhost:8080/upload'
+      method='post'
+      encType="multipart/form-data">
+        <input type="file" name="sampleFile" />
+        <input type='submit' value='Upload!' />
+    </form>
+    <form ref='uploadForm'
+      id='uploadForm'
+      action='http://localhost:8080/download'
+      method='get'>
+      <input type='submit' value='Download File' />
+    </form>
+  </body>
+</html>

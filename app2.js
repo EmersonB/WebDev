@@ -5,6 +5,8 @@ var express = require('express');
 var path = require('path')
 var app = express();
 var Handlebars = require('handlebars');
+var cheerio = require('cheerio');
+
 
 var admin = require("firebase-admin");
 
@@ -102,4 +104,5 @@ app.get('/', function(req, res) {
   //res.send('Hello there peoples @\n' + req.connection.remoteAddress);
   //res.send(return_string+test_string);
   res.send(result);
+  //res.sendFile('index.html', {root: __dirname });
 });

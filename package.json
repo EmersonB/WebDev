@@ -4,15 +4,18 @@
   "engines": {
     "node": "5.9.1"
   },
-  "main": "app2.js",
+  "main": "app3.js",
   "scripts": {
-    "start": "node app2.js"
+    "start": "node app3.js"
   },
   "dependencies": {
     "express": "4.13.3",
     "firebase": "3.7.4",
     "firebase-admin": "latest",
-    "handlebars": "latest"
+    "handlebars": "latest",
+    "cheerio": "latest",
+    "express-fileupload": "latest",
+    "python-shell": "latest"
   },
   "keywords": [
     "node",
