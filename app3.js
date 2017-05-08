@@ -21,9 +21,12 @@ var listener = app.listen(app.get('port'), function() {
   console.log( listener.address().port );
 });
 
-app.get('/', function(req, res) {
-    res.sendFile(path.join(__dirname + '/index.html'));
-});
+// app.get('/:file(*)', function (req,res,next){
+//   var file = req.params.file
+//   , path = __dirname + '/'+file;
+//
+//   res.download(path);
+// });
 
 app.get('/', function(req, res) {
   //res.sendFile('index.html', {root: __dirname });
