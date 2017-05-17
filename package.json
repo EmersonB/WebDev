@@ -15,7 +15,9 @@
     "handlebars": "latest",
     "cheerio": "latest",
     "express-fileupload": "latest",
-    "python-shell": "latest"
+    "python-shell": "latest",
+    "body-parser": "latest",
+    "node-mysql": "latest"
   },
   "keywords": [
     "node",

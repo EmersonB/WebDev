@@ -8,8 +8,12 @@ var Handlebars = require('handlebars');
 var cheerio = require('cheerio');
 var fileUpload = require('express-fileupload');
 var PythonShell = require('python-shell');
+var db = require('node-mysql');
 
 exports.engine = 'hbs';
+
+var bodyParser = require('body-parser');
+app.use(bodyParser.urlencoded());
 
 app.use(fileUpload());
 
@@ -21,12 +25,12 @@ var listener = app.listen(app.get('port'), function() {
   console.log( listener.address().port );
 });
 
-// app.get('/:file(*)', function (req,res,next){
-//   var file = req.params.file
-//   , path = __dirname + '/'+file;
-//
-//   res.download(path);
-// });
+app.get('/:file(*)', function (req,res,next){
+  var file = req.params.file
+  , path = __dirname + '/python/'+file;
+
+  res.download(path);
+});
 
 app.get('/', function(req, res) {
   //res.sendFile('index.html', {root: __dirname });
@@ -44,7 +48,8 @@ app.get('/', function(req, res) {
 });
 
 app.post('/upload', function(req, res) {
-  if (!req.files){
+  //console.log(req.files.sampleFile.name);
+  if (!req.files.sampleFile){
     print(err)
     return res.status(400).send('No files were uploaded.');
   }
@@ -53,22 +58,39 @@ app.post('/upload', function(req, res) {
   var sampleFile = req.files.sampleFile;
 
   // Use the mv() method to place the file somewhere on your server
-  sampleFile.mv('python/input.txt', function(err) {
+  sampleFile.mv('python/'+sampleFile.name, function(err) {
     if (err){
       print(err)
       return res.status(500).send(err);
     }
+  var uuid = guid();
+  uuid += ".txt";
+  var options = {
+    args: [sampleFile.name, uuid]
+  }
 
-    PythonShell.run('python/testscript.py', function (err) {
+  PythonShell.run('python/testscript.py', options, function (err) {
       if (err) throw err;
       console.log('finished');
+      var file = __dirname+'/python/'+sampleFile.name
+      //res.download(file); // Set disposition and send it.
+      res.send("https://user.tjhsst.edu/2018eberlik/"+uuid);
     });
 
-    res.send('File uploaded!');
   });
 });
 
-app.get('/download', function(req, res){
-  var file = __dirname + '/python/output.txt';
-  res.download(file); // Set disposition and send it.
-});
+function guid() {
+  function s4() {
+    return Math.floor((1 + Math.random()) * 0x10000)
+      .toString(16)
+      .substring(1);
+  }
+  return s4() + s4() + '-' + s4() + '-' + s4() + '-' +
+    s4() + '-' + s4() + s4() + s4();
+}
+
+// app.get('/download', function(req, res){
+//   var file = __dirname + '/python/output.txt';
+//   res.download(file); // Set disposition and send it.
+// });

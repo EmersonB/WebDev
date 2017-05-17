@@ -1,20 +1,52 @@
 <!DOCTYPE html>
 <html>
+  <head>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+  </head>
   <body>
     {{title}}
-    <form ref='uploadForm'
+    <!-- <form ref='uploadForm'
       id='uploadForm'
-      action='https://user.tjhsst.edu/2018eberlik//upload'
       method='post'
       encType="multipart/form-data">
-        <input type="file" name="sampleFile" />
+
         <input type='submit' value='Upload!' />
+        <input type="file" id="sampleFile" name="sampleFile" />
     </form>
     <form ref='uploadForm'
       id='uploadForm'
-      action='https://user.tjhsst.edu/2018eberlik//download'
+      action='http://localhost:8080/download'
       method='get'>
       <input type='submit' value='Download File' />
-    </form>
+    </form> -->
+
+    <input type="file" id="sampleFile" name="sampleFile" />
+    <button id="submit">Submit</button>
+    <br/>
+    <div id="download"/>
   </body>
+  <script>
+      $("#submit").click( function() {
+        var file = $('#sampleFile').get(0).files[0];
+        var formData = new FormData();
+        formData.append('sampleFile', file);
+        //console.log($('#name').val());
+        $.ajax({
+        url: 'https://user.tjhsst.edu/2018eberlik/upload',
+        type: "POST",
+        data: formData,
+        processData: false,
+        contentType: false,
+        cache: false,
+        timeout: 5000,
+        success: function(data) {
+            var name = data;
+            $('#download').html("<a href="+data+">Download Link</a>");
+        },
+        error: function(jqXHR, textStatus, errorThrown) {
+            //alert('Error connecting to the Node.js server... ' + textStatus + " " + errorThrown);
+        }
+        });
+         });
+  </script>
 </html>
