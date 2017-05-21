@@ -8,11 +8,13 @@ var Handlebars = require('handlebars');
 var cheerio = require('cheerio');
 var fileUpload = require('express-fileupload');
 var PythonShell = require('python-shell');
-var db = require('node-mysql');
+var bodyParser = require('body-parser');
+var sqlite3 = require('sqlite3').verbose();
 
 exports.engine = 'hbs';
 
-var bodyParser = require('body-parser');
+var db = new sqlite3.Database('test.db');
+
 app.use(bodyParser.urlencoded());
 
 app.use(fileUpload());
@@ -34,7 +36,6 @@ app.get('/:file(*)', function (req,res,next){
 
 app.get('/', function(req, res) {
   //res.sendFile('index.html', {root: __dirname });
-
   var template = require( __dirname+'/home.hbs');
   var data = { "title": "Emerson"};
   var result = template(data);
@@ -80,6 +81,12 @@ app.post('/upload', function(req, res) {
   });
 });
 
+app.post('/makeuser', function(req, res) {
+  var name = req.body.name;
+  var email = req.body.email;
+  make_user(email,name);
+});
+
 function guid() {
   function s4() {
     return Math.floor((1 + Math.random()) * 0x10000)
@@ -89,6 +96,26 @@ function guid() {
   return s4() + s4() + '-' + s4() + '-' + s4() + '-' +
     s4() + '-' + s4() + s4() + s4();
 }
+
+function make_user(email,name){
+  db.serialize(function() {
+    //db.run("CREATE TABLE lorem (info TEXT)");
+
+    // var stmt = db.prepare("INSERT INTO lorem VALUES (?)");
+    // for (var i = 0; i < 10; i++) {
+    //     stmt.run("Ipsum " + i);
+    // }
+    // stmt.finalize();
+
+    db.run("insert into users values('"+email+"','"+name+"');")
+    // db.each("SELECT * FROM users", function(err, row) {
+    //     console.log(row.name + ": " + row.email);
+    // });
+  });
+
+  //db.close();
+}
+
 
 // app.get('/download', function(req, res){
 //   var file = __dirname + '/python/output.txt';

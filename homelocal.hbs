@@ -19,7 +19,9 @@
       method='get'>
       <input type='submit' value='Download File' />
     </form> -->
-
+    <input type="text" placeholder="email" id="email"/>
+    <input type="text" placeholder="name" id="name"/>
+    <button id="createuser">Create User</button><br/>
     <input type="file" id="sampleFile" name="sampleFile" />
     <button id="submit">Submit</button>
     <br/>
@@ -47,6 +49,27 @@
             //alert('Error connecting to the Node.js server... ' + textStatus + " " + errorThrown);
         }
         });
-         });
+      });
+
+      $("#createuser").click( function() {
+        //console.log($('#name').val());
+        $.ajax({
+        url: 'http://localhost:8080/makeuser',
+        type: "POST",
+        data: {
+            name: $('#email').val(),
+            email: $('#name').val()
+        },
+        dataType: "jsonp",
+        cache: false,
+        timeout: 5000
+        // success: function(data) {
+        //     $("#test").append(data);
+        // },
+        // error: function(jqXHR, textStatus, errorThrown) {
+        //     alert('Error connecting to the Node.js server... ' + textStatus + " " + errorThrown);
+        // }
+        });
+      });
   </script>
 </html>
