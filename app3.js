@@ -36,7 +36,8 @@ app.get('/:file(*)', function (req,res,next){
 
 app.get('/', function(req, res) {
   //res.sendFile('index.html', {root: __dirname });
-  var template = require( __dirname+'/home.hbs');
+  make_user('bob','roberto');
+  var template = require( __dirname+'/homelocal.hbs');
   var data = { "title": "Emerson"};
   var result = template(data);
   res.send(result);
@@ -81,10 +82,10 @@ app.post('/upload', function(req, res) {
   });
 });
 
-app.post('/makeuser', function(req, res) {
+app.post('/update', function(req, res) {
   var name = req.body.name;
   var email = req.body.email;
-  make_user(email,name);
+  make_user(email)
 });
 
 function guid() {
@@ -108,12 +109,12 @@ function make_user(email,name){
     // stmt.finalize();
 
     db.run("insert into users values('"+email+"','"+name+"');")
-    // db.each("SELECT * FROM users", function(err, row) {
-    //     console.log(row.name + ": " + row.email);
-    // });
+    db.each("SELECT * FROM users", function(err, row) {
+        console.log(row.name + ": " + row.email);
+    });
   });
 
-  //db.close();
+  db.close();
 }
 
 
