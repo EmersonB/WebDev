@@ -1,4 +1,5 @@
 Inventory = function(socket,server){
+  "use strict";
     var self = {
         items:[], //{id:"itemId",amount:1}
 		socket:socket,
@@ -24,14 +25,14 @@ Inventory = function(socket,server){
 				self.refreshRender();
 				return;
 			}
-		}    
+		}
     }
     self.hasItem = function(id,amount){
 		for(var i = 0 ; i < self.items.length; i++){
 			if(self.items[i].id === id){
 				return self.items[i].amount >= amount;
 			}
-		}  
+		}
 		return false;
     }
 	self.refreshRender = function(){
@@ -45,7 +46,7 @@ Inventory = function(socket,server){
 		inventory.innerHTML = "";
 		var addButton = function(data){
 			let item = Item.list[data.id];
-			let button = document.createElement('button'); 
+			let button = document.createElement('button');
 			button.onclick = function(){
 				self.socket.emit("useItem",item.id);
 			}
@@ -92,8 +93,3 @@ Item("superAttack","Super Attack",function(player){
 	for(var i = 0 ; i < 360; i++)
 		player.shootBullet(i);
 });
-
-
-
-
-
