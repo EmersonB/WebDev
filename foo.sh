@@ -1,2 +1,2 @@
 #!/bin/sh
-node app3.js > info.log
+node app.js > info.log

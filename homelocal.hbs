@@ -21,7 +21,9 @@
     </form> -->
     <input type="text" placeholder="email" id="email"/>
     <input type="text" placeholder="name" id="name"/>
-    <button id="createuser">Create User</button><br/>
+    <button id="createuser">Create User</button>
+    <button id="login">Login</button>
+    <br/>
     <input type="file" id="sampleFile" name="sampleFile" />
     <button id="submit">Submit</button>
     <br/>
@@ -47,6 +49,7 @@
         },
         error: function(jqXHR, textStatus, errorThrown) {
             //alert('Error connecting to the Node.js server... ' + textStatus + " " + errorThrown);
+            alert('Please login first');
         }
         });
       });
@@ -57,8 +60,28 @@
         url: 'http://localhost:8080/makeuser',
         type: "POST",
         data: {
-            name: $('#email').val(),
-            email: $('#name').val()
+            email: $('#email').val(),
+            name: $('#name').val()
+        },
+        dataType: "jsonp",
+        cache: false,
+        timeout: 5000
+        // success: function(data) {
+        //     $("#test").append(data);
+        // },
+        // error: function(jqXHR, textStatus, errorThrown) {
+        //     alert('Error connecting to the Node.js server... ' + textStatus + " " + errorThrown);
+        // }
+        });
+      });
+      $("#login").click( function() {
+        //console.log($('#name').val());
+        $.ajax({
+        url: 'http://localhost:8080/login',
+        type: "POST",
+        data: {
+            email: $('#email').val(),
+            name: $('#name').val()
         },
         dataType: "jsonp",
         cache: false,

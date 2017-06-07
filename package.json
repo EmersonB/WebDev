@@ -4,9 +4,9 @@
   "engines": {
     "node": "5.9.1"
   },
-  "main": "app3.js",
+  "main": "app5.js",
   "scripts": {
-    "start": "node app3.js"
+    "start": "node app5.js"
   },
   "dependencies": {
     "express": "4.13.3",
@@ -17,7 +17,11 @@
     "express-fileupload": "latest",
     "python-shell": "latest",
     "body-parser": "latest",
-    "sqlite3": "latest"
+    "sqlite3": "latest",
+    "simple-oauth2": "latest",
+    "cookie-session": "latest",
+    "http": "latest",
+    "socket.io": "latest"
   },
   "keywords": [
     "node",

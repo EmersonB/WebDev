@@ -1,37 +1,128 @@
-// #!/usr/bin/nodejs 
-// ABOVE LINE FOR TJ SERVER
+//var mongojs = require("mongojs");
+var db = null;//mongojs('localhost:27017/myGame', ['account','progress']);
+
+require('./Entity');
+require('./client/Inventory');
 
 var express = require('express');
-var path = require('path')
 var app = express();
+var serv = require('http').Server(app);
 
-// This is so express can get to these files
-app.use("/css",  express.static(__dirname + '/css'));
-app.use("/js", express.static(__dirname + '/js'));
+app.get('/',function(req, res) {
+	res.sendFile(__dirname + '/client/index.html');
+});
+app.use('/client',express.static(__dirname + '/client'));
 
-// standard line for heroku
-app.set('port', process.env.PORT || 8080);
+serv.listen(process.env.PORT || 2000);
+console.log("Server started.");
 
-// ------------------ //
-// CONTROLLERS        //
-// ------------------ //
-app.get('/', function(req, res) {	
-   res.send('Hello there peoples @\n' + req.connection.remoteAddress);
+var SOCKET_LIST = {};
+
+
+var DEBUG = true;
+
+var isValidPassword = function(data,cb){
+	return cb(true);
+	/*db.account.find({username:data.username,password:data.password},function(err,res){
+		if(res.length > 0)
+			cb(true);
+		else
+			cb(false);
+	});*/
+}
+var isUsernameTaken = function(data,cb){
+	return cb(false);
+	/*db.account.find({username:data.username},function(err,res){
+		if(res.length > 0)
+			cb(true);
+		else
+			cb(false);
+	});*/
+}
+var addUser = function(data,cb){
+	return cb();
+	/*db.account.insert({username:data.username,password:data.password},function(err){
+		cb();
+	});*/
+}
+
+var io = require('socket.io')(serv,{});
+io.sockets.on('connection', function(socket){
+	socket.id = Math.random();
+	SOCKET_LIST[socket.id] = socket;
+	
+	socket.on('signIn',function(data){ //{username,password}
+		isValidPassword(data,function(res){
+			if(res){
+				Player.onConnect(socket,data.username);
+				socket.emit('signInResponse',{success:true});
+			} else {
+				socket.emit('signInResponse',{success:false});			
+			}
+		});
+	});
+	socket.on('signUp',function(data){
+		isUsernameTaken(data,function(res){
+			if(res){
+				socket.emit('signUpResponse',{success:false});		
+			} else {
+				addUser(data,function(){
+					socket.emit('signUpResponse',{success:true});					
+				});
+			}
+		});		
+	});
+	
+	
+	socket.on('disconnect',function(){
+		delete SOCKET_LIST[socket.id];
+		Player.onDisconnect(socket);
+	});
+	
+	socket.on('evalServer',function(data){
+		if(!DEBUG)
+			return;
+		var res = eval(data);
+		socket.emit('evalAnswer',res);		
+	});
+	
+	
+	
 });
 
-app.get('/index', function(req, res) {
-    res.sendFile(path.join(__dirname + '/index.html'));
-});
 
-app.get('/hello.txt', function(req, res){
-    var body = 'Hello World. It\'s me';
-    res.setHeader('Content-Type', 'text/plain');
-    res.setHeader('Content-Length', body.length);
-    res.end(body);
-});
-// ------------------ //
+setInterval(function(){
+	var packs = Entity.getFrameUpdateData();
+	for(var i in SOCKET_LIST){
+		var socket = SOCKET_LIST[i];
+		socket.emit('init',packs.initPack);
+		socket.emit('update',packs.updatePack);
+		socket.emit('remove',packs.removePack);
+	}
+	
+},1000/25);
 
-// server side logging
-var listener = app.listen(app.get('port'), function() {
-  console.log( listener.address().port );
-});
+/*
+var profiler = require('v8-profiler');
+var fs = require('fs');
+var startProfiling = function(duration){
+	profiler.startProfiling('1', true);
+	setTimeout(function(){
+		var profile1 = profiler.stopProfiling('1');
+		
+		profile1.export(function(error, result) {
+			fs.writeFile('./profile.cpuprofile', result);
+			profile1.delete();
+			console.log("Profile saved.");
+		});
+	},duration);	
+}
+startProfiling(10000);
+*/
+
+
+
+
+
+
+
