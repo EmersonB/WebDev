@@ -4,9 +4,9 @@
   "engines": {
     "node": "5.9.1"
   },
-  "main": "app5.js",
+  "main": "app.js",
   "scripts": {
-    "start": "node app5.js"
+    "start": "node app.js"
   },
   "dependencies": {
     "express": "4.13.3",
@@ -21,7 +21,8 @@
     "simple-oauth2": "latest",
     "cookie-session": "latest",
     "http": "latest",
-    "socket.io": "latest"
+    "socket.io": "latest",
+    "cookie": "latest"
   },
   "keywords": [
     "node",

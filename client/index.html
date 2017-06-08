@@ -1,3 +1,4 @@
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 <div id="signDiv">
 	Username: <input id="signDiv-username" type="text"></input><br>
 	Password: <input id="signDiv-password" type="password"></input>
@@ -21,12 +22,11 @@
 
 	<div id="belowGame" style="margin-top:520px">
 		<div id="chat-text" style="width:500px;height:100px;overflow-y:scroll">
-			<div>Hello!</div>
 		</div>
 		<div id="inventory"></div>
-		<form id="chat-form">
+		<!-- <form id="chat-form">
 			<input id="chat-input" type="text" style="width:500px"></input>
-		</form>
+		</form> -->
 	</div>
 </div>
 
@@ -34,7 +34,26 @@
 <script src="/client/socket.js"></script>
 <script src="/client/Inventory.js"></script>
 <script>
-	//
+	//user info
+	var user;
+	$.ajax({
+		url: 'http://localhost:8080/user',
+		type: "GET",
+		data: JSON,
+		processData: false,
+		contentType: false,
+		cache: false,
+		timeout: 5000,
+		success: function(data) {
+			console.log(data["ion_username"]);
+			user = data;
+		},
+		error: function(jqXHR, textStatus, errorThrown) {
+				//alert('Error connecting to the Node.js server... ' + textStatus + " " + errorThrown);
+		}
+		});
+
+		//
 	var WIDTH = 500;
 	var HEIGHT = 500;
 	var socket = io();
@@ -47,10 +66,11 @@
 	var signDivPassword = document.getElementById('signDiv-password');
 
 	signDivSignIn.onclick = function(){
-		socket.emit('signIn',{username:signDivUsername.value,password:signDivPassword.value});
+		socket.emit('signIn',{username:user['ion_username']});
 	}
 	signDivSignUp.onclick = function(){
-		socket.emit('signUp',{username:signDivUsername.value,password:signDivPassword.value});
+		//socket.emit('signUp',{username:signDivUsername.value,password:signDivPassword.value});
+		socket.emit('signUp',{username:user['ion_username']});
 	}
 	socket.on('signInResponse',function(data){
 		if(data.success){
@@ -68,31 +88,31 @@
 
 	//chat
 	var chatText = document.getElementById('chat-text');
-	var chatInput = document.getElementById('chat-input');
+	//var chatInput = document.getElementById('chat-input');
 	var chatForm = document.getElementById('chat-form');
 
-	socket.on('addToChat',function(data){
-		chatText.innerHTML += '<div>' + data + '</div>';
-	});
+	// socket.on('addToChat',function(data){
+	// 	chatText.innerHTML += '<div>' + data + '</div>';
+	// });
 	socket.on('evalAnswer',function(data){
 		console.log(data);
 	});
 
 
-	chatForm.onsubmit = function(e){
-		e.preventDefault();
-		if(chatInput.value[0] === '/')
-			socket.emit('evalServer',chatInput.value.slice(1));
-		else if(chatInput.value[0] === '@'){
-			//@username,message
-			socket.emit('sendPmToServer',{
-				username:chatInput.value.slice(1,chatInput.value.indexOf(',')),
-				message:chatInput.value.slice(chatInput.value.indexOf(',') + 1)
-			});
-		} else
-			socket.emit('sendMsgToServer',chatInput.value);
-		chatInput.value = '';
-	}
+	// chatForm.onsubmit = function(e){
+	// 	e.preventDefault();
+	// 	if(chatInput.value[0] === '/')
+	// 		socket.emit('evalServer',chatInput.value.slice(1));
+	// 	else if(chatInput.value[0] === '@'){
+	// 		//@username,message
+	// 		socket.emit('sendPmToServer',{
+	// 			username:chatInput.value.slice(1,chatInput.value.indexOf(',')),
+	// 			message:chatInput.value.slice(chatInput.value.indexOf(',') + 1)
+	// 		});
+	// 	} else
+	// 		socket.emit('sendMsgToServer',chatInput.value);
+	// 	chatInput.value = '';
+	// }
 
 	//UI
 	var changeMap = function(){

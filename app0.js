@@ -1,4 +1,4 @@
-// #!/usr/bin/nodejs 
+// #!/usr/bin/nodejs
 // ABOVE LINE FOR TJ SERVER
 
 var express = require('express');
@@ -15,7 +15,7 @@ app.set('port', process.env.PORT || 8080);
 // ------------------ //
 // CONTROLLERS        //
 // ------------------ //
-app.get('/', function(req, res) {	
+app.get('/', function(req, res) {
    res.send('Hello there peoples @\n' + req.connection.remoteAddress);
 });
 
