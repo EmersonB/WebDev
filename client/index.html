@@ -1,9 +1,11 @@
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 <div id="signDiv">
-	Username: <input id="signDiv-username" type="text"></input><br>
+	<!-- Username: <input id="signDiv-username" type="text"></input><br>
 	Password: <input id="signDiv-password" type="password"></input>
 	<button id="signDiv-signIn">Sign In</button>
-	<button id="signDiv-signUp">Sign Up</button>
+	<button id="signDiv-signUp">Sign Up</button> -->
+	<a id="ion" href="https://tjwebdev.herokuapp.com/ion">Ion Login</a>
+	<button id="signDiv-signIn">Sign In</button>
 </div>
 
 <div id="gameDiv" style="display:none;">
@@ -37,7 +39,7 @@
 	//user info
 	var user;
 	$.ajax({
-		url: 'http://localhost:8080/user',
+		url: 'https://tjwebdev.herokuapp.com/user',
 		type: "GET",
 		data: JSON,
 		processData: false,
