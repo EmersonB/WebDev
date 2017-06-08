@@ -19,7 +19,7 @@ app.use(cookieSession({
 
 var ion_client_id = 'GCth7IMxd0hEVwJ14bTh7d7VU5vOtPmqYpKWuXFp';
 var ion_client_secret = 'XMpTxARzTJ9Xg2tDeitySHXZINJRYre3dOGwkJT4LtR5y7fL5dT3K2ohAg5LISzPpNROtrCKDS1FOb3VNKiwcRJnULAAjGGgVIKuLxKbCSCilkgkvSReVOgtgl7H3pMu';
-var ion_redirect_uri = 'http://localhost:8080/login';
+var ion_redirect_uri = 'https://tjwebdev.herokuapp.com/login';
 
 var oauth2 = simpleoauth2.create({
   client: {
