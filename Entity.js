@@ -12,6 +12,7 @@ Entity = function(param){
 		spdY:0,
 		id:"",
 		map:'forest',
+		name: param.username
 	}
 	if(param){
 		if(param.x)
@@ -21,9 +22,9 @@ Entity = function(param){
 		if(param.map)
 			self.map = param.map;
 		if(param.id)
-			self.id = param.id;		
+			self.id = param.id;
 	}
-	
+
 	self.update = function(){
 		self.updatePosition();
 	}
@@ -74,13 +75,13 @@ Player = function(param){
 	self.hpMax = 10;
 	self.score = 0;
 	self.inventory = new Inventory(param.socket,true);
-	
+
 	var super_update = self.update;
 	self.update = function(){
 		self.updateSpd();
-		
+
 		super_update();
-		
+
 		if(self.pressingAttack){
 			self.shootBullet(self.mouseAngle);
 		}
@@ -96,7 +97,7 @@ Player = function(param){
 			map:self.map,
 		});
 	}
-	
+
 	self.updateSpd = function(){
 		if(self.pressingRight)
 			self.spdX = self.maxSpd;
@@ -104,26 +105,27 @@ Player = function(param){
 			self.spdX = -self.maxSpd;
 		else
 			self.spdX = 0;
-		
+
 		if(self.pressingUp)
 			self.spdY = -self.maxSpd;
 		else if(self.pressingDown)
 			self.spdY = self.maxSpd;
 		else
-			self.spdY = 0;		
+			self.spdY = 0;
 	}
-	
+
 	self.getInitPack = function(){
 		return {
 			id:self.id,
 			x:self.x,
-			y:self.y,	
-			number:self.number,	
+			y:self.y,
+			number:self.number,
 			hp:self.hp,
 			hpMax:self.hpMax,
 			score:self.score,
 			map:self.map,
-		};		
+			name: self.name
+		};
 	}
 	self.getUpdatePack = function(){
 		return {
@@ -133,11 +135,12 @@ Player = function(param){
 			hp:self.hp,
 			score:self.score,
 			map:self.map,
-		}	
+			name: self.name
+		}
 	}
-	
+
 	Player.list[self.id] = self;
-	
+
 	initPack.player.push(self.getInitPack());
 	return self;
 }
@@ -166,14 +169,14 @@ Player.onConnect = function(socket,username){
 		else if(data.inputId === 'mouseAngle')
 			player.mouseAngle = data.state;
 	});
-	
+
 	socket.on('changeMap',function(data){
 		if(player.map === 'field')
 			player.map = 'forest';
 		else
 			player.map = 'field';
 	});
-	
+
 	socket.on('sendMsgToServer',function(data){
 		for(var i in SOCKET_LIST){
 			SOCKET_LIST[i].emit('addToChat',player.username + ': ' + data);
@@ -191,7 +194,7 @@ Player.onConnect = function(socket,username){
 			socket.emit('addToChat','To ' + data.username + ':' + data.message);
 		}
 	});
-	
+
 	socket.emit('init',{
 		selfId:socket.id,
 		player:Player.getAllInitPack(),
@@ -214,7 +217,7 @@ Player.update = function(){
 	for(var i in Player.list){
 		var player = Player.list[i];
 		player.update();
-		pack.push(player.getUpdatePack());		
+		pack.push(player.getUpdatePack());
 	}
 	return pack;
 }
@@ -227,7 +230,7 @@ Bullet = function(param){
 	self.spdX = Math.cos(param.angle/180*Math.PI) * 10;
 	self.spdY = Math.sin(param.angle/180*Math.PI) * 10;
 	self.parent = param.parent;
-	
+
 	self.timer = 0;
 	self.toRemove = false;
 	var super_update = self.update;
@@ -235,19 +238,19 @@ Bullet = function(param){
 		if(self.timer++ > 100)
 			self.toRemove = true;
 		super_update();
-		
+
 		for(var i in Player.list){
 			var p = Player.list[i];
 			if(self.map === p.map && self.getDistance(p) < 32 && self.parent !== p.id){
 				p.hp -= 1;
-								
+
 				if(p.hp <= 0){
 					var shooter = Player.list[self.parent];
 					if(shooter)
 						shooter.score += 1;
 					p.hp = p.hpMax;
 					p.x = Math.random() * 500;
-					p.y = Math.random() * 500;					
+					p.y = Math.random() * 500;
 				}
 				self.toRemove = true;
 			}
@@ -265,10 +268,10 @@ Bullet = function(param){
 		return {
 			id:self.id,
 			x:self.x,
-			y:self.y,		
+			y:self.y,
 		};
 	}
-	
+
 	Bullet.list[self.id] = self;
 	initPack.bullet.push(self.getInitPack());
 	return self;
@@ -284,7 +287,7 @@ Bullet.update = function(){
 			delete Bullet.list[i];
 			removePack.bullet.push(bullet.id);
 		} else
-			pack.push(bullet.getUpdatePack());		
+			pack.push(bullet.getUpdatePack());
 	}
 	return pack;
 }
