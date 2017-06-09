@@ -4,8 +4,8 @@
 	Password: <input id="signDiv-password" type="password"></input>
 	<button id="signDiv-signIn">Sign In</button>
 	<button id="signDiv-signUp">Sign Up</button> -->
-	<!-- <a id="ion" href="http://localhost:8080/ion">Ion Login</a> -->
-	<a id="ion" href="https://tjwebdev.herokuapp.com/ion">Ion Login</a>
+	<a id="ion" href="http://localhost:8080/ion">Ion Login</a>
+	<!-- <a id="ion" href="https://tjwebdev.herokuapp.com/ion">Ion Login</a> -->
 	<button id="signDiv-signIn">Sign In</button>
 	<button id="signDiv-signUp">Sign Up</button>
 </div>
@@ -50,8 +50,8 @@
 	//user info
 	var user;
 	$.ajax({
-		//url: 'http://localhost:8080/user',
-		url: 'https://tjwebdev.herokuapp.com/user',
+		url: 'http://localhost:8080/user',
+		// url: 'https://tjwebdev.herokuapp.com/user',
 		type: "GET",
 		data: JSON,
 		processData: false,

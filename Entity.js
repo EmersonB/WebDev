@@ -31,6 +31,9 @@ Entity = function(param){
 	self.updatePosition = function(){
 		self.x += self.spdX;
 		self.y += self.spdY;
+		if(self.y>300){
+			self.y = 300;
+		}
 	}
 	self.getDistance = function(pt){
 		return Math.sqrt(Math.pow(self.x-pt.x,2) + Math.pow(self.y-pt.y,2));
@@ -75,7 +78,10 @@ Player = function(param){
 	self.hpMax = 10;
 	self.score = 0;
 	self.inventory = new Inventory(param.socket,true);
-
+	console.log(self);
+	// if(self.name == "2018eberlik"){
+	// 	self.maxSpd = 50;
+	// }
 	var super_update = self.update;
 	self.update = function(){
 		self.updateSpd();
@@ -106,10 +112,12 @@ Player = function(param){
 		else
 			self.spdX = 0;
 
-		if(self.pressingUp)
-			self.spdY = -self.maxSpd;
-		else if(self.pressingDown)
-			self.spdY = self.maxSpd;
+		if(self.pressingUp && self.y == 300)
+			self.spdY = -self.maxSpd * 3;
+		// else if(self.pressingDown) // && self.y < 300)
+		// 	self.spdY = self.maxSpd;
+		else if(self.y < 300)
+			self.spdY += 3;
 		else
 			self.spdY = 0;
 	}
@@ -250,7 +258,7 @@ Bullet = function(param){
 						shooter.score += 1;
 					p.hp = p.hpMax;
 					p.x = Math.random() * 500;
-					p.y = Math.random() * 500;
+					p.y = (Math.random() * 500) - 300;
 				}
 				self.toRemove = true;
 			}
