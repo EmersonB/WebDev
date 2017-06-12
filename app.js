@@ -39,7 +39,7 @@ var authorizationUri = oauth2.authorizationCode.authorizeURL({
     redirect_uri: ion_redirect_uri
 });
 
-app.get('/login', (req, res,next) => {
+app.get('/login', (req, res, next) => {
 
     var theCode = req.query.code // GET parameter
 
