@@ -56,7 +56,7 @@ app.get('/login', (req, res, next) => {
         req.session.token = token;
         console.log(req.session.token);
 
-        return res.json(token);
+        res.sendFile(__dirname + '/client/index.html');
     });
 
 });
