@@ -66,21 +66,22 @@ app.get('/ion', function (req, res, next) {
     req.session.views = (req.session.views || 0) + 1
     var login = '<a href="'+authorizationUri+'">Log in with ION Oauth</a><br>';
 
-    if (typeof req.session.token != 'undefined') {
-        var access_token = req.session.token.token.access_token;
-        console.log(access_token);
-        // request.get({url:'https://ion.tjhsst.edu/api/profile?format=json', access_token:access_token }, function (e, r, body) {
-        //     console.log(body);
-        // })
-        request.get({url:'https://ion.tjhsst.edu/api/profile?format=json&access_token='+access_token}, function (e, r, body) {
-            console.log(body);
-            login = "Hello "+JSON.parse(body)["display_name"];
-            res.send(login);
-        })
-    } else {
-        console.log('no token');
-        res.send(login);
-    }
+    // if (typeof req.session.token != 'undefined') {
+    //     var access_token = req.session.token.token.access_token;
+    //     console.log(access_token);
+    //     // request.get({url:'https://ion.tjhsst.edu/api/profile?format=json', access_token:access_token }, function (e, r, body) {
+    //     //     console.log(body);
+    //     // })
+    //     request.get({url:'https://ion.tjhsst.edu/api/profile?format=json&access_token='+access_token}, function (e, r, body) {
+    //         console.log(body);
+    //         login = "Hello "+JSON.parse(body)["display_name"];
+    //         res.send(login);
+    //     })
+    // } else {
+    //     console.log('no token');
+    //     res.send(login);
+    // }
+    res.send(login);
 
 
 });
