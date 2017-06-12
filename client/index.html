@@ -12,15 +12,16 @@
 
 <div id="gameDiv" style="display:none;">
 	<div id="game" style="position:absolute;width:500px;height:500px">
-		<canvas id="ctx" width="500" height="500" style="position:absolute;border:1px solid #000000;"></canvas>
-		<canvas id="ctx-ui" width="500" height="500" style="position:absolute;border:1px solid #000000;"></canvas>
-
-		<div id="ui" style="position:absolute;width:500px;height:500px;">
+		<canvas id="ctx" style="background: url('client/img/space.png')" width="500" height="500" style="position:absolute;border:1px solid #000000;"></canvas>
+		<!-- <canvas id="ctx-ui" width="500" height="500" style="position:absolute;border:1px solid #000000;"></canvas> -->
+		<button onclick="changeMap()" style="position:absolute;bottom:0px;left:0px">
+			Change Map
+		</button>
+		<!-- <div id="ui" style="position:absolute;width:500px;height:500px;">
 			<button onclick="changeMap()" style="position:absolute;bottom:0px;left:0px">
 				Change Map
 			</button>
-
-		</div>
+		</div> -->
 
 	</div>
 
@@ -147,18 +148,18 @@
 	Img.player = new Image();
 	Img.player.src = '/client/img/player.png';
 	Img.bullet = new Image();
-	Img.bullet.src = '/client/img/bullet.png';
+	Img.bullet.src = '/client/img/bullet2.png';
 
 	Img.map = {};
 	Img.map['field'] = new Image();
-	Img.map['field'].src = '/client/img/map.png';
+	Img.map['field'].src = '/client/img/platform1.png';
 	Img.map['forest'] = new Image();
-	Img.map['forest'].src = '/client/img/space.png';
+	Img.map['forest'].src = '/client/img/platform1.png';
 
 	var ctx = document.getElementById("ctx").getContext("2d");
-	var ctxUi = document.getElementById("ctx-ui").getContext("2d");
-	ctxUi.font = '30px Arial';
-	ctx.font = '10px Arial'
+	//var ctxUi = document.getElementById("ctx-ui").getContext("2d");
+	//ctxUi.font = '30px Arial';
+	ctx.font = '10px Arial';
 
 	var Player = function(initPack){
 		var self = {};
@@ -305,7 +306,7 @@
 	var drawMap = function(){
 		var player = Player.list[selfId];
 		var x = WIDTH/2 - player.x;
-		var y = HEIGHT/2 - player.y;
+		var y = HEIGHT/2 - player.y+212;
 		ctx.drawImage(Img.map[player.map],x,y);
 	}
 
@@ -313,9 +314,9 @@
 		if(lastScore === Player.list[selfId].score)
 			return;
 		lastScore = Player.list[selfId].score;
-		ctxUi.clearRect(0,0,500,500);
-		ctxUi.fillStyle = 'red';
-		ctxUi.fillText(Player.list[selfId].score,0,30);
+		//ctxUi.clearRect(0,0,500,500);
+		//ctxUi.fillStyle = 'red';
+		//ctxUi.fillText(Player.list[selfId].score,0,30);
 	}
 	var lastScore = null;
 

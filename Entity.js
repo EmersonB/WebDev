@@ -31,7 +31,13 @@ Entity = function(param){
 	self.updatePosition = function(){
 		self.x += self.spdX;
 		self.y += self.spdY;
-		if(self.y>300){
+		if(self.y < 200 && self.y > 190 && self.x > 530 && self.x < 740){
+			self.y = 190;
+		}
+		if(self.y < 200 && self.y > 190 && self.x > 110 && self.x < 340){
+			self.y = 190;
+		}
+		if(self.y>300 && self.x > -10 && self.x < 910){
 			self.y = 300;
 		}
 	}
@@ -78,7 +84,7 @@ Player = function(param){
 	self.hpMax = 10;
 	self.score = 0;
 	self.inventory = new Inventory(param.socket,true);
-	console.log(self);
+	//console.log(self);
 	// if(self.name == "2018eberlik"){
 	// 	self.maxSpd = 50;
 	// }
@@ -93,8 +99,9 @@ Player = function(param){
 		}
 	}
 	self.shootBullet = function(angle){
-		if(Math.random() < 0.1)
-			self.inventory.addItem("potion",1);
+		// if(Math.random() < 0.1)
+		// 	self.inventory.addItem("potion",1);
+		// 180 is left , 0 is right
 		Bullet({
 			parent:self.id,
 			angle:angle,
@@ -107,19 +114,52 @@ Player = function(param){
 	self.updateSpd = function(){
 		if(self.pressingRight)
 			self.spdX = self.maxSpd;
-		else if(self.pressingLeft)
-			self.spdX = -self.maxSpd;
+		else if(self.pressingLeft){
+			//console.log(self.x);
+			self.spdX = -self.maxSpd;}
 		else
 			self.spdX = 0;
 
-		if(self.pressingUp && self.y == 300)
-			self.spdY = -self.maxSpd * 3;
-		// else if(self.pressingDown) // && self.y < 300)
-		// 	self.spdY = self.maxSpd;
-		else if(self.y < 300)
+		//second tier platforms
+		if(self.x > 530 && self.x < 740 && self.y <= 190){
+			if(self.pressingUp && self.y == 190)
+				self.spdY = -self.maxSpd * 3;
+			// else if(self.pressingDown) // && self.y < 300)
+			// 	self.spdY = self.maxSpd;
+			else if(self.y < 190)
+				self.spdY += 3;
+			else
+				self.spdY = 0;
+		}
+		//base
+		else if(self.x > 110 && self.x < 340 && self.y <= 190){
+			if(self.pressingUp && self.y == 190)
+				self.spdY = -self.maxSpd * 3;
+			// else if(self.pressingDown) // && self.y < 300)
+			// 	self.spdY = self.maxSpd;
+			else if(self.y < 190)
+				self.spdY += 3;
+			else
+				self.spdY = 0;
+		}
+		else{
+			if(self.pressingUp && self.y == 300)
+				self.spdY = -self.maxSpd * 3;
+			// else if(self.pressingDown) // && self.y < 300)
+			// 	self.spdY = self.maxSpd;
+			else if(self.y < 300)
+				self.spdY += 3;
+			else
+				self.spdY = 0;
+		}
+
+		//edges of map
+		if(self.x < -10){
 			self.spdY += 3;
-		else
-			self.spdY = 0;
+		}
+		if(self.x > 910){
+			self.spdY += 3;
+		}
 	}
 
 	self.getInitPack = function(){
