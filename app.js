@@ -61,9 +61,11 @@ app.get('/login', (req, res, next) => {
 
 });
 
+
+
 app.get('/ion', function (req, res, next) {
     // Update views
-    req.session.views = (req.session.views || 0) + 1
+    //req.session.views = (req.session.views || 0) + 1
     var login = '<a href="'+authorizationUri+'">Log in with ION Oauth</a><br>';
 
     // if (typeof req.session.token != 'undefined') {
@@ -82,8 +84,10 @@ app.get('/ion', function (req, res, next) {
     //     res.send(login);
     // }
     res.send(login);
+});
 
-
+app.get('/link', function (req, res, next) {
+    res.send(authorizationUri);
 });
 
 app.get('/user', function (req, res, next) {

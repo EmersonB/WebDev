@@ -5,9 +5,9 @@
 	<button id="signDiv-signIn">Sign In</button>
 	<button id="signDiv-signUp">Sign Up</button> -->
 	<!-- <a id="ion" href="http://localhost:8080/ion">Ion Login</a> -->
-	<a id="ion" href="https://tjwebdev.herokuapp.com/ion">Ion Login</a>
-	<button id="signDiv-signIn">Sign In</button>
-	<button id="signDiv-signUp">Sign Up</button>
+	<a id="ion">Login with ion</a>
+	<button id="signDiv-signIn">Go!</button>
+	<!-- <button id="signDiv-signUp">Sign Up</button> -->
 </div>
 
 <div id="gameDiv" style="display:none;">
@@ -69,6 +69,25 @@
 		}
 		});
 
+		$.ajax({
+			// url: 'http://localhost:8080/user',
+			url: 'https://tjwebdev.herokuapp.com/link',
+			type: "GET",
+			data: JSON,
+			processData: false,
+			contentType: false,
+			cache: false,
+			timeout: 5000,
+			success: function(data) {
+				console.log(data);
+					$('#ion').attr(href, data);
+			},
+			error: function(jqXHR, textStatus, errorThrown) {
+					//alert('Error connecting to the Node.js server... ' + textStatus + " " + errorThrown);
+
+			}
+			});
+
 		//
 	var WIDTH = 500;
 	var HEIGHT = 500;
@@ -78,7 +97,7 @@
 	var signDiv = document.getElementById('signDiv');
 	var signDivUsername = document.getElementById('signDiv-username');
 	var signDivSignIn = document.getElementById('signDiv-signIn');
-	var signDivSignUp = document.getElementById('signDiv-signUp');
+	// var signDivSignUp = document.getElementById('signDiv-signUp');
 	var signDivPassword = document.getElementById('signDiv-password');
 
 	var leaderboard = $("#leaderboard");
@@ -87,10 +106,10 @@
 	signDivSignIn.onclick = function(){
 		socket.emit('signIn',{username:user['ion_username']});
 	}
-	signDivSignUp.onclick = function(){
-		//socket.emit('signUp',{username:signDivUsername.value,password:signDivPassword.value});
-		socket.emit('signUp',{username:user['ion_username']});
-	}
+	// signDivSignUp.onclick = function(){
+	// 	//socket.emit('signUp',{username:signDivUsername.value,password:signDivPassword.value});
+	// 	socket.emit('signUp',{username:user['ion_username']});
+	// }
 	socket.on('signInResponse',function(data){
 		if(data.success){
 			signDiv.style.display = 'none';
