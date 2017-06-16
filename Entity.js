@@ -96,7 +96,7 @@ Player = function(param){
 
 		if(self.pressingAttack){
 			self.shootBullet(self.mouseAngle);
-			setTimeout('', 2500);
+			setTimeout('', 10000);
 		}
 	}
 	self.shootBullet = function(angle){
